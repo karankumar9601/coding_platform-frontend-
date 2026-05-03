@@ -1,10 +1,18 @@
+import { BrowserRouter, Route, Routes } from "react-router"
+import Login from "./publicPage/AuthPage/Login"
+import Signup from "./publicPage/AuthPage/Signup"
+import HomePage from "./publicPage/Home"
 
 function App() {
 
   return (
-   <div>
-    <h1 className='bg-red-600'>Hello karan</h1>
-   </div>
+    <BrowserRouter>
+       <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<Signup/>}/>
+       </Routes>
+    </BrowserRouter>
   )
 }
 
