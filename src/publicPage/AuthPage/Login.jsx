@@ -2,9 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import {z} from "zod"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
+import { useDispatch, useSelector } from "react-redux"
+import { LoginUser } from "../../store/auth_slice"
 
 const loginSchema = z.object({
-    email: z.string().email("Invalid Email"),
+    emailId: z.string().email("Invalid Email"),
     password: z.string().min(8, "password should contain atleast 8 character")
 })
 
@@ -12,9 +14,11 @@ export default function Login(){
 
     const navigate=useNavigate()
     const { register, handleSubmit,reset, formState: { errors }, } = useForm({ resolver: zodResolver(loginSchema) });
+   const {loading,error,user,isAuthenticate}= useSelector(state=>state.auth)
+   const dispatch=useDispatch()
 
     const loginData=(submittedData)=>{
-        console.log(submittedData);
+        dispatch(LoginUser(submittedData))
         reset()
         
     }
@@ -31,8 +35,8 @@ export default function Login(){
                      
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">Email</legend>
-                            <input type="email"placeholder="karan@gmail.com"className="input input-bordered w-full focus:outline-none focus:border-orange-500"{...register("email")}/>
-                            {errors.email && (<p className="text-error text-sm">{errors.email.message}</p>)}
+                            <input type="email"placeholder="karan@gmail.com"className="input input-bordered w-full focus:outline-none focus:border-orange-500"{...register("emailId")}/>
+                            {errors.emailId && (<p className="text-error text-sm">{errors.email.message}</p>)}
                         </fieldset>
 
                         <fieldset className="fieldset">
@@ -42,6 +46,7 @@ export default function Login(){
                         </fieldset>
 
                         <button type="submit"className="btn w-full bg-gray-600 hover:bg- text-white border-none mt-2">Login</button>
+                        {isAuthenticate && (<span className="text-sm text-red-500">{user?.message}</span>)}
                     </form>
 
                     <div className="divider text-xs">OR</div>
