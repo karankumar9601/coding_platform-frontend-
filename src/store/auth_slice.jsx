@@ -3,7 +3,7 @@ import axiosClient from "../utils/axios"
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 
 export const LoginUser = createAsyncThunk(
-    "loginUser/fetch",
+    "auth/loginUser",
     async (loginData,{rejectWithValue}) => {
         try {
             const res = await axiosClient.post('/api/login', loginData)
@@ -28,7 +28,7 @@ export const RegisterUser = createAsyncThunk(
 
 export const GetProfile = createAsyncThunk(
     "getProfile/fetch",
-    async () => {
+    async (_,{rejectWithValue}) => {
         try {
         
         } catch (error) {
@@ -39,13 +39,27 @@ export const GetProfile = createAsyncThunk(
 
 export const LogoutUser = createAsyncThunk(
     "logoutUser/fetch",
-    async () => {
+    async (_,{rejectWithValue}) => {
         try {
-
+          const res=await axiosClient.post('/api/logout')
+          return res.data
         } catch (error) {
-
+          return rejectWithValue(error.res?.data)
         }
     }
+)
+
+export const check_Auth =createAsyncThunk(
+           "auth/check_user",
+           async(_,{rejectWithValue})=>{
+            try {
+                const res=await axiosClient.get('/api/check_auth')
+                return res.data
+            } catch (error) {
+                 return rejectWithValue(error.res?.data)
+            }
+
+           }
 )
 
 const auth_slice = createSlice({
@@ -106,7 +120,7 @@ const auth_slice = createSlice({
             })
             //getProfile
             .addCase(GetProfile.pending, (state) => {
-                state.loading = false,
+                state.loading = true,
                     state.error = null
             })
             .addCase(GetProfile.fulfilled, (state, action) => {
@@ -120,6 +134,24 @@ const auth_slice = createSlice({
                     state.error = action.payload,
                     state.isAuthenticate = false,
                     state.user = null
+            })
+
+            //check Auth
+            .addCase(check_Auth.pending,(state)=>{
+                state.loading=true,
+                state.error=null
+            })
+            .addCase(check_Auth.fulfilled,(state,action)=>{
+                state.loading=false,
+                state.isAuthenticate=true,
+                state.user=action.payload,
+                state.error=null
+            })
+            .addCase(check_Auth.rejected,(state,action)=>{
+                state.loading=false,
+                state.error=action.payload,
+                state.isAuthenticate=false,
+                state.user=null
             })
     }
 })
