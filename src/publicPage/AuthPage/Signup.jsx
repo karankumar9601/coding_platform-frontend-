@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux";
 import { RegisterUser } from "../../store/auth_slice";
+import { useEffect } from "react";
 
 
 const signupSchema = z.object({
@@ -15,13 +16,19 @@ const signupSchema = z.object({
 export default function Signup() {
     const navigate = useNavigate()
     const { register, handleSubmit, reset, formState: { errors }, } = useForm({ resolver: zodResolver(signupSchema) });
-    const { loading, user, error } = useSelector(state => state.auth)
+    const { loading, user, error,isAuthenticate } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const signupData =(submittedData) => {
           dispatch(RegisterUser(submittedData))
           reset()  
     }
+
+    useEffect(()=>{
+       if (isAuthenticate) {
+          navigate("/")
+       }
+    },[isAuthenticate])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
@@ -51,7 +58,9 @@ export default function Signup() {
                             {errors.password && (<p className="text-error text-sm">{errors.password.message}</p>)}
                         </fieldset>
 
-                        <button type="submit" className="btn w-full bg-gray-600 hover:bg- text-white border-none mt-2">Sign Up</button>
+                        <button type="submit" className={`btn w-full bg-gray-600 hover:bg- text-white border-none mt-2 ${loading?'loading':""}`} disabled={loading}>
+                            {loading?'signing Up..':'sign Up'}
+                        </button>
                         <span className="text-xl text-red-500">{user?.message}</span>
                     </form>
 

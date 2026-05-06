@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
 import { LoginUser } from "../../store/auth_slice"
+import { useEffect } from "react"
 
 const loginSchema = z.object({
     emailId: z.string().email("Invalid Email"),
@@ -22,6 +23,12 @@ export default function Login(){
         reset()
         
     }
+
+    useEffect(()=>{
+        if (isAuthenticate) {
+           navigate("/") 
+        }
+    },[isAuthenticate])
     return(
          <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
             <div className="card w-full max-w-md bg-base-100 shadow-xl border border-base-300">
@@ -45,7 +52,9 @@ export default function Login(){
                             {errors.password && (<p className="text-error text-sm">{errors.password.message}</p>)}
                         </fieldset>
 
-                        <button type="submit"className="btn w-full bg-gray-600 hover:bg- text-white border-none mt-2">Login</button>
+                         <button type="submit" className={`btn w-full bg-gray-600 hover:bg- text-white border-none mt-2 ${loading?'loading':""}`} disabled={loading}>
+                            {loading?'loging..':'Login'}
+                        </button>
                         {isAuthenticate && (<span className="text-sm text-red-500">{user?.message}</span>)}
                     </form>
 
