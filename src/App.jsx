@@ -8,18 +8,18 @@ import { check_Auth } from "./store/auth_slice"
 
 function App() {
 
-  const {isAuthenticate} = useSelector(state => state.auth)
-  const dispatch=useDispatch()
-
-  useEffect(()=>{
-     dispatch(check_Auth())
-  },[dispatch])
+  const { isAuthenticate, loading } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(check_Auth())
+  }, [dispatch])
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isAuthenticate?<HomePage />:<Navigate to={"/signup"}/>} />
-        <Route path="/login" element={isAuthenticate?<Navigate to={"/"}/>:<Login />} />
-        <Route path="/signup" element={isAuthenticate?<Navigate to={"/"}/>:<Signup />} />
+        <Route path="/" element={isAuthenticate ? <HomePage /> : <Navigate to={"/login"} />} />
+        <Route path="/login" element={isAuthenticate ? <Navigate to={"/"} /> : <Login />} />
+        <Route path="/signup" element={isAuthenticate ? <Navigate to={"/"} /> : <Signup />} />
       </Routes>
     </BrowserRouter>
   )
