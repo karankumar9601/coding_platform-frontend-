@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import axiosClient from "../utils/axios";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../store/auth_slice";
 export default function AdminDashboard() {
@@ -14,6 +14,7 @@ export default function AdminDashboard() {
 
   const { user } = useSelector(state => state.auth)
   const dispatch = useDispatch()
+  const navigate=useNavigate()
 
   const handleLogout = async () => {
     dispatch(LogoutUser())
@@ -29,6 +30,23 @@ export default function AdminDashboard() {
       console.log(error);
     }
   };
+
+  const deleteProblem=async(id)=>{
+    try {
+       const res=await axiosClient.delete(`/problem/${id}`)
+       if (res.status==204) {
+         alert("problem Deleted Successfully")
+         setProblems((prev) => prev.filter((problem) => problem._id !== id));
+          setTotalProblem((prev) => prev - 1);
+       }else{
+        alert("problem not delete successfully !")
+       }
+    } catch (error) {
+      console.log(error.res.data);
+     alert("something went wrong")  
+    }  
+  }
+
   useEffect(() => {
     fetchProblems()
   }, [page])
@@ -94,7 +112,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               <div className="bg-slate-900 p-5 rounded-xl border border-slate-800">
                 <p className="text-slate-400">Total Problems</p>
-                <h3 className="text-3xl font-bold">40</h3>
+                <h3 className="text-3xl font-bold">{totalProblem}</h3>
               </div>
 
               <div className="bg-slate-900 p-5 rounded-xl border border-slate-800">
@@ -128,9 +146,9 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4 capitalize">{problem.difficulty}</td>
                     <td className="px-6 py-4 capitalize">{problem.tag}</td>
                     <td className="px-6 py-4 flex gap-3">
-                      <button className="bg-yellow-500 text-black px-3 py-1 rounded">Edit</button>
-                      <button className="bg-red-500 px-3 py-1 rounded">Delete</button>
-                      <button className="bg-blue-500 px-3 py-1 rounded">View</button>
+                      <button onClick={()=>navigate(`/updateProblem/${problem?._id}`)} className="bg-yellow-500 text-black px-3 py-1 rounded">Edit</button>
+                      <button onClick={()=>deleteProblem(problem?._id)} className="bg-red-500 px-3 py-1 rounded">Delete</button>
+                      <button onClick={()=>navigate(`/getSingleProblem/${problem?._id}`)} className="bg-blue-500 px-3 py-1 rounded">View</button>
                     </td>
                   </tr>
                 ))}

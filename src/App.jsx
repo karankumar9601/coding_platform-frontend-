@@ -8,6 +8,7 @@ import { check_Auth } from "./store/auth_slice"
 import AdminDashboard from "./adminPage/dashboard"
 import AddProblem from "./adminPage/problem/addProblem"
 import GetSingleProblem from "./adminPage/problem/getSingleProblem"
+import UpdateProblem from "./adminPage/problem/updateProblem"
 
 function App() {
 
@@ -31,7 +32,8 @@ function App() {
       <Routes>
         <Route path="/dashboard"  element={isAdmin ?<AdminDashboard/>:<Navigate to={"/login"}/>}></Route>
         <Route path="/addProblem" element={isAdmin ? <AddProblem/>:<Navigate to={"/login"}/>}/>
-        <Route path="/getSingleProblem" element={isAdmin ? <GetSingleProblem/>:<Navigate to={"/login"}/>}/>
+        <Route path="/getSingleProblem/:id" element={isAdmin ? <GetSingleProblem/>:<Navigate to={"/login"}/>}/>
+        <Route path="/updateProblem/:id" element={isAdmin?<UpdateProblem/>:<Navigate to={"/login"}/>}/>
         <Route path="/" element={isAuthenticate ? <HomePage /> : <Navigate to={"/login"} />} />
         <Route path="/login" element={isAuthenticate ? <Navigate to={"/"} /> : <Login />} />
         <Route path="/signup" element={isAuthenticate ? <Navigate to={"/"} /> : <Signup />} />
