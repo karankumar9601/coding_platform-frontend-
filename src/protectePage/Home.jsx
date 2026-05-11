@@ -18,7 +18,6 @@ const HomePage = () => {
 
     const { user, isAuthenticate } = useSelector(state => state.auth)
     const dispatch = useDispatch()
-      console.log(user);
       
     const uniqueTags = [...new Set(problems.map((problem) => problem.tag))];
 

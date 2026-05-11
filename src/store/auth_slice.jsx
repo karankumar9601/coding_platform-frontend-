@@ -64,7 +64,7 @@ export const check_Auth =createAsyncThunk(
 
 const auth_slice = createSlice({
     name: "auth",
-    initialState: { user: null, isAuthenticate: false, loading: false, error: null },
+    initialState: { user: null, isAuthenticate: false, loading: true, error: null },
     reducers: {},
     extraReducers: (builder) => {
         builder

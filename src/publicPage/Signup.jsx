@@ -3,7 +3,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux";
-import { RegisterUser } from "../../store/auth_slice";
+import { RegisterUser } from "../store/auth_slice";
 import { useEffect } from "react";
 
 
