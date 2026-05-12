@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [totalPage, setTotalPage] = useState(1);
   const [problems, setProblems] = useState([])
   const [totalProblem, setTotalProblem] = useState(" ")
+  const [totalUser,setTotalUser]=useState(0)
 
   const { user } = useSelector(state => state.auth)
   const dispatch = useDispatch()
@@ -47,9 +48,25 @@ export default function AdminDashboard() {
     }  
   }
 
+   const userDetails = async (req, res) => {
+        try {
+            const res = await axiosClient.get(`/api/allUser?page=${page}&limit=10`)
+            if (res.data.success) {
+                setTotalUser(res.data.totalUser)
+            }
+        } catch (error) {
+            console.log(error.res.data);
+            alert("something went wrong")
+        }
+    }
+
   useEffect(() => {
     fetchProblems()
   }, [page])
+
+  useEffect(()=>{
+    userDetails();
+  },[])
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Navbar */}
@@ -93,7 +110,7 @@ export default function AdminDashboard() {
             </li>
 
             <li>
-              <a>Users</a>
+              <Link to="/user">Users</Link>
             </li>
             <li>
               <a>Recent Submission</a>
@@ -117,7 +134,7 @@ export default function AdminDashboard() {
 
               <div className="bg-slate-900 p-5 rounded-xl border border-slate-800">
                 <p className="text-slate-400">Total Users</p>
-                <h3 className="text-3xl font-bold">40</h3>
+                <h3 className="text-3xl font-bold">{totalUser}</h3>
               </div>
 
               <div className="bg-slate-900 p-5 rounded-xl border border-slate-800">
