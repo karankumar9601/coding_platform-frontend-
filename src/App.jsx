@@ -9,6 +9,8 @@ import AdminDashboard from "./adminPage/dashboard"
 import AddProblem from "./adminPage/problem/addProblem"
 import GetSingleProblem from "./adminPage/problem/getSingleProblem"
 import UpdateProblem from "./adminPage/problem/updateProblem"
+import UserDetails from "./adminPage/user"
+import CodeEditor from "./publicPage/editor"
 
 function App() {
 
@@ -30,13 +32,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/dashboard"  element={isAdmin ?<AdminDashboard/>:<Navigate to={"/login"}/>}></Route>
-        <Route path="/addProblem" element={isAdmin ? <AddProblem/>:<Navigate to={"/login"}/>}/>
-        <Route path="/getSingleProblem/:id" element={isAdmin ? <GetSingleProblem/>:<Navigate to={"/login"}/>}/>
+        <Route path="/dashboard"  element={isAdmin ?<AdminDashboard/>:<Navigate to={"/"}/>}></Route>
+        <Route path="/addProblem" element={isAdmin ? <AddProblem/>:<Navigate to={"/"}/>}/>
+        <Route path="/getSingleProblem/:id" element={isAdmin ? <GetSingleProblem/>:<Navigate to={"/"}/>}/>
         <Route path="/updateProblem/:id" element={isAdmin?<UpdateProblem/>:<Navigate to={"/login"}/>}/>
+        <Route path="/user" element={isAdmin ? <UserDetails/>:<Navigate to={"/"}/>}/>
         <Route path="/" element={isAuthenticate ? <HomePage /> : <Navigate to={"/login"} />} />
         <Route path="/login" element={isAuthenticate ? <Navigate to={"/"} /> : <Login />} />
         <Route path="/signup" element={isAuthenticate ? <Navigate to={"/"} /> : <Signup />} />
+        <Route path="/code-Editor/:id" element={isAuthenticate?<CodeEditor/>:<Navigate to={"/login"}/>}/>
       </Routes>
     </BrowserRouter>
   )

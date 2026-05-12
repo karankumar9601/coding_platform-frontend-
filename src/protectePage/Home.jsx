@@ -3,6 +3,7 @@ import axiosClient from "../utils/axios";
 import { CheckCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../store/auth_slice";
+import { useNavigate } from "react-router";
 
 const HomePage = () => {
     const [problems, setProblems] = useState([]);
@@ -18,6 +19,7 @@ const HomePage = () => {
 
     const { user, isAuthenticate } = useSelector(state => state.auth)
     const dispatch = useDispatch()
+    const navigate=useNavigate()
       
     const uniqueTags = [...new Set(problems.map((problem) => problem.tag))];
 
@@ -144,7 +146,7 @@ const HomePage = () => {
                             {filteredProblems.map((problem) => {
                                 const isSolved = solvedIds.includes(problem._id);
                                 return (
-                                    <tr key={problem._id} className="border-t border-slate-800">
+                                    <tr key={problem._id} className="border-t border-slate-800" onClick={()=>navigate(`/code-Editor/${problem?._id}`)}>
                                         <td className="px-6 py-4">{isSolved && (<CheckCircle className="text-green-400" size={20} />)}</td>
                                         <td className="px-6 py-4">{problem.title}</td>
                                         <td className="px-6 py-4 capitalize">{problem.difficulty}</td>
