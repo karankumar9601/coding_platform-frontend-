@@ -10,6 +10,9 @@ export default function CodeEditor() {
     const [code, setCode] = useState("");
     const [testResult, setTestResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [submission, setSubmission] = useState([]);
+    const [codeShow, setCodeShow] = useState(false)
+    const [selectedCode, setSelectedCode] = useState("");
 
     const { id } = useParams();
 
@@ -33,10 +36,27 @@ export default function CodeEditor() {
         }
     };
 
+    const fetchSolveProblem = async () => {
+        try {
+            setLoading(true)
+            const res = await axiosClient.get(`/user/submission/${id}`);
+            if (res.data.success) {
+                setSubmission(res.data.data)
+            }
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+            alert("Something went wrong");
+        } finally {
+            setLoading(false)
+        }
+    }
     useEffect(() => {
         fetchProblem();
     }, [id]);
 
+    useEffect(() => {
+        fetchSolveProblem()
+    }, [id])
     const handleLanguageChange = (e) => {
         const selectedLanguage = e.target.value;
         setLanguage(selectedLanguage);
@@ -203,20 +223,77 @@ export default function CodeEditor() {
                     )}
 
                     {activeTab === "submissions" && (
-                        <div>
-                            <h2 className="text-xl font-bold mb-4">Submissions</h2>
+                        <div className="mt-6">
+                            <h2 className="text-2xl font-bold mb-5 text-white">Submissions</h2>
 
-                            {/* API REPLACE HERE:
-                  Recent submissions API
-                  Example backend: GET /api/submission/problem/:problemId
-                  You can fetch submissions here using useEffect when activeTab === "submissions"
-              */}
+                            <div className="overflow-x-auto bg-[#1e1e1e] border border-gray-700 rounded-2xl shadow-lg">
+                                <table className="w-full text-sm text-left text-gray-300">
+                                    <thead className="bg-[#2a2a2a] text-gray-200 uppercase text-xs tracking-wider">
+                                        <tr>
+                                            <th className="px-6 py-4">Status</th>
+                                            <th className="px-6 py-4">Language</th>
+                                            <th className="px-6 py-4">Runtime</th>
+                                            <th className="px-6 py-4">Memory</th>
+                                            <th className="px-6 py-4 text-center">Code</th>
+                                        </tr>
+                                    </thead>
 
-                            <div className="bg-[#333] rounded-lg p-4">
-                                <p>Status: Accepted</p>
-                                <p>Language: Java</p>
-                                <p>Runtime: 2 ms</p>
+                                    <tbody>
+                                        {submission?.map((value, index) => (
+                                            <tr key={value?._id || index} className="border-t border-gray-700 hover:bg-[#2b2b2b] transition">
+                                                <td className="px-6 py-4">
+                                                    <span
+                                                        className={`px-3 py-1 rounded-full text-xs font-semibold ${value?.status === "accepted" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}>
+                                                        {value?.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">{value?.language}</td>
+                                                <td className="px-6 py-4">{value?.runtime || "N/A"}</td>
+                                                <td className="px-6 py-4">{value?.memory || "N/A"}</td>
+                                                <td className="px-6 py-4 text-center">
+                                                    <button onClick={() => {
+                                                        setSelectedCode(value?.code);
+                                                        setCodeShow(true);
+                                                    }}
+                                                        className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium transition"
+                                                    >
+                                                        View Code
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
+
+                            {/* Popup Modal */}
+                            {codeShow && (
+                                <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50 px-4">
+                                    <div className="bg-[#1f1f1f] w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
+
+                                        {/* Header */}
+                                        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-700">
+                                            <h2 className="text-xl font-semibold text-white">
+                                                Submitted Code
+                                            </h2>
+
+                                            <button
+                                                onClick={() => setCodeShow(false)}
+                                                className="text-gray-400 hover:text-red-500 text-2xl"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+
+                                        {/* Code Section */}
+                                        <div className="p-5 max-h-[70vh] overflow-y-auto">
+                                            <pre className="bg-black text-green-400 p-4 rounded-xl text-sm overflow-x-auto">
+                                                <code>{selectedCode}</code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -264,45 +341,20 @@ export default function CodeEditor() {
                             <div className="mt-6 bg-[#333] rounded-lg p-4">
                                 <p className="text-lg font-bold mb-3">
                                     Status:{" "}
-                                    <span
-                                        className={
-                                            testResult.status === "accepted"
-                                                ? "text-green-400"
-                                                : testResult.status === "wrong"
-                                                    ? "text-red-400"
-                                                    : "text-yellow-400"
-                                        }
-                                    >
-                                        {testResult.status}
-                                    </span>
+                                    <span className={testResult.status === "accepted" ? "text-green-400" : testResult.status === "wrong" ? "text-red-400" : "text-yellow-400"}>{testResult.status} </span>
                                 </p>
-
-                                <p>
-                                    <b>Message:</b> {testResult.message}
-                                </p>
-
+                                <p><b>Message:</b> {testResult.message}</p>
                                 {testResult.total !== undefined && (
-                                    <p>
-                                        <b>Testcases:</b> {testResult.passed}/{testResult.total}
-                                    </p>
+                                    <p><b>Testcases:</b> {testResult.passed}/{testResult.total}</p>
                                 )}
-
                                 {testResult.runtime !== undefined && (
-                                    <p>
-                                        <b>Runtime:</b> {testResult.runtime}s
-                                    </p>
+                                    <p><b>Runtime:</b> {testResult.runtime}s  </p>
                                 )}
-
                                 {testResult.memory !== undefined && (
-                                    <p>
-                                        <b>Memory:</b> {testResult.memory} KB
-                                    </p>
+                                    <p><b>Memory:</b> {testResult.memory} KB  </p>
                                 )}
-
                                 {testResult.error && (
-                                    <pre className="mt-3 bg-black p-3 rounded text-red-400 whitespace-pre-wrap">
-                                        {testResult.error}
-                                    </pre>
+                                    <pre className="mt-3 bg-black p-3 rounded text-red-400 whitespace-pre-wrap">{testResult.error}  </pre>
                                 )}
                             </div>
                         )}
