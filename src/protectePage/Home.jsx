@@ -3,7 +3,7 @@ import axiosClient from "../utils/axios";
 import { CheckCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../store/auth_slice";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const HomePage = () => {
     const [problems, setProblems] = useState([]);
@@ -19,8 +19,8 @@ const HomePage = () => {
 
     const { user, isAuthenticate } = useSelector(state => state.auth)
     const dispatch = useDispatch()
-    const navigate=useNavigate()
-      
+    const navigate = useNavigate()
+
     const uniqueTags = [...new Set(problems.map((problem) => problem.tag))];
 
     const uniqueDifficulties = [...new Set(problems.map((problem) => problem.difficulty)),];
@@ -90,14 +90,29 @@ const HomePage = () => {
             <div className="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
                 {/* Project Name */}
                 <h1 className="text-2xl font-bold text-cyan-400">AlgoForge</h1>
-                {/* User + Logout */}
-                <div className="flex items-center gap-4">
-                    <div className="bg-slate-800 px-4 py-2 rounded-lg">
-                        {user.data?.firstName}
-                    </div>
-                    <button onClick={() => handleLogout()} className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition">Logout</button>
 
-                </div>
+                {/* User Dropdown */}
+                <details className="dropdown dropdown-end">
+                    <summary className="btn bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl px-4">
+                        <span className="w-8 h-8 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center font-bold">
+                            {user?.data?.firstName?.charAt(0)?.toUpperCase()}
+                        </span>
+                        <span>{user?.data?.firstName}</span>
+                    </summary>
+
+                    <ul className="menu dropdown-content mt-3 bg-slate-800 border border-slate-700 rounded-xl z-50 w-56 p-2 shadow-xl text-gray-200">
+                        {user?.data?.role === "admin" && (
+                            <li><Link to="/dashboard" className="hover:bg-slate-700 rounded-lg px-4 py-2">Dashboard</Link></li>
+                        )}
+                        <li><Link to="/profile" className="hover:bg-slate-700 rounded-lg px-4 py-2">Profile</Link></li>
+                        <li>
+                            <Link to="/submissions" className="hover:bg-slate-700 rounded-lg px-4 py-2">Submission</Link></li>
+                        <div className="border-t border-slate-700 my-2"></div>
+                        <li>
+                            <button onClick={handleLogout} className="text-red-400 hover:bg-red-500 hover:text-white rounded-lg px-4 py-2 transition text-left">Logout</button>
+                        </li>
+                    </ul>
+                </details>
             </div>
 
             <div className="p-6 max-w-6xl mx-auto">
@@ -123,10 +138,10 @@ const HomePage = () => {
                     <select value={tag} onChange={(e) => setTag(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2">
                         <option value="all">All Tags</option>
                         {
-                         uniqueTags.map(item=> <option key={item} value={item}>{item}</option>)   
+                            uniqueTags.map(item => <option key={item} value={item}>{item}</option>)
                         }
-                       
-                    
+
+
                     </select>
                 </div>
 
@@ -146,7 +161,7 @@ const HomePage = () => {
                             {filteredProblems.map((problem) => {
                                 const isSolved = solvedIds.includes(problem._id);
                                 return (
-                                    <tr key={problem._id} className="border-t border-slate-800" onClick={()=>navigate(`/code-Editor/${problem?._id}`)}>
+                                    <tr key={problem._id} className="border-t border-slate-800" onClick={() => navigate(`/code-Editor/${problem?._id}`)}>
                                         <td className="px-6 py-4">{isSolved && (<CheckCircle className="text-green-400" size={20} />)}</td>
                                         <td className="px-6 py-4">{problem.title}</td>
                                         <td className="px-6 py-4 capitalize">{problem.difficulty}</td>

@@ -10,7 +10,9 @@ import AddProblem from "./adminPage/problem/addProblem"
 import GetSingleProblem from "./adminPage/problem/getSingleProblem"
 import UpdateProblem from "./adminPage/problem/updateProblem"
 import UserDetails from "./adminPage/user"
-import CodeEditor from "./publicPage/editor"
+import CodeEditor from "./protectePage/editor"
+import UserProfile from "./protectePage/userProfile"
+import AllProblemSolveByUser from "./protectePage/allProblemSubmission"
 
 function App() {
 
@@ -41,6 +43,8 @@ function App() {
         <Route path="/login" element={isAuthenticate ? <Navigate to={"/"} /> : <Login />} />
         <Route path="/signup" element={isAuthenticate ? <Navigate to={"/"} /> : <Signup />} />
         <Route path="/code-Editor/:id" element={isAuthenticate?<CodeEditor/>:<Navigate to={"/login"}/>}/>
+        <Route path="/profile" element={isAuthenticate?<UserProfile/>:<Navigate to={"/login"}/>}/>
+        <Route path="/submissions" element={isAuthenticate?<AllProblemSolveByUser/>:<Navigate to={"/login"}/>}/>
       </Routes>
     </BrowserRouter>
   )
