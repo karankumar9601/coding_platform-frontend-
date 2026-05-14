@@ -104,9 +104,9 @@ const HomePage = () => {
                         {user?.data?.role === "admin" && (
                             <li><Link to="/dashboard" className="hover:bg-slate-700 rounded-lg px-4 py-2">Dashboard</Link></li>
                         )}
-                        <li><Link to="/profile" className="hover:bg-slate-700 rounded-lg px-4 py-2">Profile</Link></li>
+                        <li><Link to={`/profile/${user?.data?._id}`} className="hover:bg-slate-700 rounded-lg px-4 py-2">Profile</Link></li>
                         <li>
-                            <Link to="/submissions" className="hover:bg-slate-700 rounded-lg px-4 py-2">Submission</Link></li>
+                            <Link to={`/submissions/${user?.data?._id}`} className="hover:bg-slate-700 rounded-lg px-4 py-2">Submission</Link></li>
                         <div className="border-t border-slate-700 my-2"></div>
                         <li>
                             <button onClick={handleLogout} className="text-red-400 hover:bg-red-500 hover:text-white rounded-lg px-4 py-2 transition text-left">Logout</button>

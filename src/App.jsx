@@ -43,7 +43,7 @@ function App() {
         <Route path="/login" element={isAuthenticate ? <Navigate to={"/"} /> : <Login />} />
         <Route path="/signup" element={isAuthenticate ? <Navigate to={"/"} /> : <Signup />} />
         <Route path="/code-Editor/:id" element={isAuthenticate?<CodeEditor/>:<Navigate to={"/login"}/>}/>
-        <Route path="/profile" element={isAuthenticate?<UserProfile/>:<Navigate to={"/login"}/>}/>
+        <Route path="/profile/:id" element={isAuthenticate?<UserProfile/>:<Navigate to={"/login"}/>}/>
         <Route path="/submissions" element={isAuthenticate?<AllProblemSolveByUser/>:<Navigate to={"/login"}/>}/>
       </Routes>
     </BrowserRouter>
