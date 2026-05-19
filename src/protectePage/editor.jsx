@@ -2,6 +2,7 @@ import Editor from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import axiosClient from "../utils/axios";
 import { useParams } from "react-router";
+import ChatAI from "../component/chatWithAI";
 
 export default function CodeEditor() {
     const [problem, setProblem] = useState(null);
@@ -16,7 +17,7 @@ export default function CodeEditor() {
 
     const { id } = useParams();
 
-    const tabs = ["description", "editorial", "solutions", "submissions"];
+    const tabs = ["description", "editorial", "solutions", "submissions","ChatAI"];
 
     const fetchProblem = async () => {
         try {
@@ -294,6 +295,15 @@ export default function CodeEditor() {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    )}
+
+                    {activeTab === "ChatAI" && (
+                        <div>
+                            <h2 className="text-xl font-bold mb-4">ChatAI</h2>
+                            <p className="leading-7 text-gray-300">
+                                {<ChatAI problem={problem}/>}
+                            </p>
                         </div>
                     )}
                 </div>

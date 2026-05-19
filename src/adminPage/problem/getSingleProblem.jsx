@@ -26,23 +26,23 @@ export default function GetSingleProblem() {
         fetchProblem(id)
     }, [id])
     return (
-        <div className="h-screen bg-base-200 flex">
+        <div className="h-screen bg-slate-950 flex">
             {/* Left Panel */}
-            <div className="w-1/2 h-screen overflow-y-auto bg-base-100 border-r border-base-300 p-6">
-                <h1 className="text-2xl font-bold mb-3">{problems?.title}</h1>
+            <div className="w-1/2 h-screen overflow-y-auto bg-slate-950 border-r border-base-300 p-6">
+                <h1 className="text-2xl text-white font-bold mb-3">{problems?.title}</h1>
                 <div className="flex gap-2 mb-5">
-                    <span className="badge badge-success badge-outline">{problems?.difficulty}</span>
-                    <span className="badge badge-info badge-outline">{problems?.tag}</span>
+                    <span className="badge badge-success badge-outline text-white ">{problems?.difficulty}</span>
+                    <span className="badge badge-info badge-outline text-white ">{problems?.tag}</span>
                 </div>
-                <p className="text-base leading-7 whitespace-pre-line mb-6">{problems?.description}</p>
+                <p className="text-base leading-7 whitespace-pre-line mb-6 text-white ">{problems?.description}</p>
                 <div className="space-y-5">
                     {problems?.visibleTestCase?.map((value, index) => (
                         <div key={index}>
-                            <h3 className="font-semibold mb-2">Example {index + 1}:</h3>
+                            <h3 className="font-semibold mb-2 text-white ">Example {index + 1}:</h3>
                             <div className="bg-base-200 rounded-lg p-4 font-mono text-sm">
-                                <p><span className="font-bold">Input:</span>{" "}{value?.input}</p>
-                                <p><span className="font-bold">Output:</span>{" "}{value?.output}</p>
-                                <p><span className="font-bold">Explanation:</span>{" "}{value?.Explanation}</p>
+                                <p><span className="font-bold ">Input:</span>{" "}{value?.input}</p>
+                                <p><span className="font-bold  ">Output:</span>{" "}{value?.output}</p>
+                                <p><span className="font-bold ">Explanation:</span>{" "}{value?.Explanation}</p>
                             </div>
                         </div>
                     ))}
