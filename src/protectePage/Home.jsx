@@ -84,104 +84,201 @@ const HomePage = () => {
         return true;
     });
 
-    return (
-        <div className="min-h-screen bg-slate-950 text-white">
-            {/* Navbar */}
-            <div className="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
-                {/* Project Name */}
-                <h1 className="text-2xl font-bold text-cyan-400">AlgoForge</h1>
+return (
+  <div className="min-h-screen bg-[#1a1a1a] text-white">
+    {/* Navbar */}
+    <div className="bg-[#1a1a1a] border-b border-[#2a2a2a] px-6 py-4 flex justify-between items-center">
+      <h1 className="text-2xl font-bold text-cyan-400">AlgoForge</h1>
 
-                {/* User Dropdown */}
-                <details className="dropdown dropdown-end">
-                    <summary className="btn bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl px-4">
-                        <span className="w-8 h-8 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center font-bold">
-                            {user?.data?.firstName?.charAt(0)?.toUpperCase()}
-                        </span>
-                        <span>{user?.data?.firstName}</span>
-                    </summary>
+      <details className="dropdown dropdown-end">
+        <summary className="btn bg-[#1a1a1a] hover:bg-[#252525] border border-[#2f2f2f] text-white rounded-xl px-4 transition">
+          <span className="w-8 h-8 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center font-bold">
+            {user?.data?.firstName?.charAt(0)?.toUpperCase()}
+          </span>
+          <span>{user?.data?.firstName}</span>
+        </summary>
 
-                    <ul className="menu dropdown-content mt-3 bg-slate-800 border border-slate-700 rounded-xl z-50 w-56 p-2 shadow-xl text-gray-200">
-                        {user?.data?.role === "admin" && (
-                            <li><Link to="/dashboard" className="hover:bg-slate-700 rounded-lg px-4 py-2">Dashboard</Link></li>
-                        )}
-                        <li><Link to={`/profile/${user?.data?._id}`} className="hover:bg-slate-700 rounded-lg px-4 py-2">Profile</Link></li>
-                        <li>
-                            <Link to={`/submissions/${user?.data?._id}`} className="hover:bg-slate-700 rounded-lg px-4 py-2">Submission</Link></li>
-                        <div className="border-t border-slate-700 my-2"></div>
-                        <li>
-                            <button onClick={handleLogout} className="text-red-400 hover:bg-red-500 hover:text-white rounded-lg px-4 py-2 transition text-left">Logout</button>
-                        </li>
-                    </ul>
-                </details>
-            </div>
+        <ul className="menu dropdown-content mt-3 bg-[#1a1a1a] border border-[#2f2f2f] rounded-xl z-50 w-56 p-2 shadow-2xl text-gray-200">
+          {user?.data?.role === "admin" && (
+            <li>
+              <Link
+                to="/dashboard"
+                className="hover:bg-[#252525] rounded-lg px-4 py-2"
+              >
+                Dashboard
+              </Link>
+            </li>
+          )}
 
-            <div className="p-6 max-w-6xl mx-auto">
-                {/* Heading */}
-                <h1 className="text-3xl font-bold mb-6">Problem Set </h1>
-                {/* Filters */}
-                <div className="grid md:grid-cols-4 gap-4 mb-6">
-                    <input type="text" placeholder="Search problem..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 outline-none" />
-                    <select value={status} onChange={(e) => setStatus(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2">
-                        <option value="all">All Status</option>
-                        <option value="solved">Solved</option>
-                        <option value="unsolved">Unsolved</option>
-                    </select>
+          <li>
+            <Link
+              to={`/profile/${user?.data?._id}`}
+              className="hover:bg-[#252525] rounded-lg px-4 py-2"
+            >
+              Profile
+            </Link>
+          </li>
 
-                    <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2">
-                        <option value="all">All Difficulty</option>
-                        {
-                            uniqueDifficulties.map((item) => (<option key={item} value={item}>{item}</option>))
-                        }
+          <li>
+            <Link
+              to={`/submissions/${user?.data?._id}`}
+              className="hover:bg-[#252525] rounded-lg px-4 py-2"
+            >
+              Submission
+            </Link>
+          </li>
 
-                    </select>
+          <div className="border-t border-[#2f2f2f] my-2"></div>
 
-                    <select value={tag} onChange={(e) => setTag(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2">
-                        <option value="all">All Tags</option>
-                        {
-                            uniqueTags.map(item => <option key={item} value={item}>{item}</option>)
-                        }
+          <li>
+            <button
+              onClick={handleLogout}
+              className="text-red-400 hover:bg-red-500 hover:text-white rounded-lg px-4 py-2 transition text-left"
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
+      </details>
+    </div>
 
+    {/* Main */}
+    <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-white">Problem Set</h1>
+        <p className="text-slate-400 mt-2">
+          Practice coding problems and improve your DSA skills
+        </p>
+      </div>
 
-                    </select>
-                </div>
+      {/* Filters */}
+      <div className="grid md:grid-cols-4 gap-4 mb-8">
+        <input
+          type="text"
+          placeholder="Search problem..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="bg-[#1a1a1a] border border-[#2f2f2f] rounded-xl px-4 py-3 outline-none focus:border-cyan-400"
+        />
 
-                {/* Table */}
-                <div className="overflow-x-auto">
-                    <table className="w-full bg-slate-900 rounded-xl overflow-hidden">
-                        <thead className="bg-slate-800">
-                            <tr>
-                                <th className="text-left px-6 py-4">Status</th>
-                                <th className="text-left px-6 py-4">Title</th>
-                                <th className="text-left px-6 py-4">Difficulty</th>
-                                <th className="text-left px-6 py-4">Tag</th>
-                            </tr>
-                        </thead>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className="bg-[#1a1a1a] border border-[#2f2f2f] rounded-xl px-4 py-3 outline-none focus:border-cyan-400"
+        >
+          <option value="all">All Status</option>
+          <option value="solved">Solved</option>
+          <option value="unsolved">Unsolved</option>
+        </select>
 
-                        <tbody>
-                            {filteredProblems.map((problem) => {
-                                const isSolved = solvedIds.includes(problem._id);
-                                return (
-                                    <tr key={problem._id} className="border-t border-slate-800" onClick={() => navigate(`/code-Editor/${problem?._id}`)}>
-                                        <td className="px-6 py-4">{isSolved && (<CheckCircle className="text-green-400" size={20} />)}</td>
-                                        <td className="px-6 py-4">{problem.title}</td>
-                                        <td className="px-6 py-4 capitalize">{problem.difficulty}</td>
-                                        <td className="px-6 py-4 capitalize">{problem.tag}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+          className="bg-[#1a1a1a] border border-[#2f2f2f] rounded-xl px-4 py-3 outline-none focus:border-cyan-400"
+        >
+          <option value="all">All Difficulty</option>
+          {uniqueDifficulties.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
 
-                {/* Pagination */}
-                <div className="flex justify-center gap-4 mt-8">
-                    <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-slate-800 px-4 py-2 rounded-lg disabled:opacity-40">Prev</button>
-                    <p className="mt-2">{page} / {totalPage}</p>
-                    <button disabled={page === totalPage} onClick={() => setPage(page + 1)} className="bg-slate-800 px-4 py-2 rounded-lg disabled:opacity-40">Next</button>
-                </div>
-            </div>
-        </div>
-    );
+        <select
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+          className="bg-[#1a1a1a] border border-[#2f2f2f] rounded-xl px-4 py-3 outline-none focus:border-cyan-400"
+        >
+          <option value="all">All Tags</option>
+          {uniqueTags.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto border border-[#2a2a2a] rounded-2xl">
+        <table className="w-full bg-[#1a1a1a] overflow-hidden">
+          <thead className="bg-[#1a1a1a] border-b border-[#2a2a2a]">
+            <tr>
+              <th className="text-left px-6 py-5">Status</th>
+              <th className="text-left px-6 py-5">Title</th>
+              <th className="text-left px-6 py-5">Difficulty</th>
+              <th className="text-left px-6 py-5">Tag</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredProblems.map((problem) => {
+              const isSolved = solvedIds.includes(problem._id);
+
+              return (
+                <tr
+                  key={problem._id}
+                  className="border-t border-[#2a2a2a] hover:bg-[#232323] transition cursor-pointer"
+                  onClick={() => navigate(`/code-Editor/${problem?._id}`)}
+                >
+                  <td className="px-6 py-5">
+                    {isSolved && (
+                      <CheckCircle className="text-green-400" size={20} />
+                    )}
+                  </td>
+
+                  <td className="px-6 py-5 font-medium">{problem.title}</td>
+
+                  <td className="px-6 py-5 capitalize">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        problem.difficulty === "easy"
+                          ? "bg-green-500/10 text-green-400"
+                          : problem.difficulty === "medium"
+                          ? "bg-yellow-500/10 text-yellow-400"
+                          : "bg-red-500/10 text-red-400"
+                      }`}
+                    >
+                      {problem.difficulty}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-5 capitalize">
+                    <span className="bg-[#252525] px-3 py-1 rounded-full text-sm">
+                      {problem.tag}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center gap-4 mt-8">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+          className="bg-[#252525] hover:bg-[#303030] px-5 py-2 rounded-xl disabled:opacity-40 transition"
+        >
+          Prev
+        </button>
+
+        <p className="bg-[#252525] px-5 py-2 rounded-xl">
+          {page} / {totalPage}
+        </p>
+
+        <button
+          disabled={page === totalPage}
+          onClick={() => setPage(page + 1)}
+          className="bg-[#252525] hover:bg-[#303030] px-5 py-2 rounded-xl disabled:opacity-40 transition"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+);
 };
 
 export default HomePage;

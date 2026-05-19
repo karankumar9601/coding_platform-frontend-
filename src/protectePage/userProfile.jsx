@@ -80,11 +80,11 @@ export default function UserProfile() {
 
   return (
   <div className="min-h-screen  from-slate-950 via-slate-900 to-cyan-950 flex justify-center items-center px-4 py-10">
-    <div className="w-full max-w-4xl bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
+    <div className="w-full max-w-4xl bg-[#1a1a1a] backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
 
       <div className="h-40  from-cyan-500 to-blue-600 relative">
         <div className="absolute -bottom-14 left-8">
-          <div className="w-28 h-28 rounded-full bg-slate-900 border-4 border-slate-950 flex items-center justify-center text-4xl font-bold text-cyan-400 shadow-lg">
+          <div className="w-28 h-28 rounded-full bg-[#1a1a1a] border-4 border-base flex items-center justify-center text-4xl font-bold text-cyan-400 shadow-lg">
           {profile?.firstName?.charAt(0)?.toUpperCase()}
           </div>
         </div>
